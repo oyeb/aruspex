@@ -36,7 +36,7 @@ defmodule Aruspex.Problem do
 
     ^problem = add_variable(problem, new_variable, :hidden)
 
-    new_constraint = &apply(c, (for v_i <- v, do: &1[v_i]))
+    new_constraint = &c.(for v_i <- v, do: &1[v_i])
 
     post(problem, new_variable, new_constraint)
   end

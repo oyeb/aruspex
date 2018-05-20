@@ -55,7 +55,11 @@ defimpl Enumerable, for: Aruspex.Strategy.SimulatedAnnealing do
 
   def neighbour(evaluation) do
     problem = evaluation.problem
-    v = Enum.random variables(problem)
+    v =
+      problem
+      |> variables()
+      |> remove_hidden()
+      |> Enum.random()
     x = variable(problem, v) |> elem(1) |> Enum.random
 
     update_in evaluation.binding, fn b ->
@@ -78,5 +82,6 @@ defimpl Enumerable, for: Aruspex.Strategy.SimulatedAnnealing do
     |> Enum.map(fn {v, d} ->
       {v, Enum.random(d)}
     end)
+    |> Map.new()
   end
 end
